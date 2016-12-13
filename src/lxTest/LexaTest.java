@@ -14,7 +14,6 @@
  */
 package lxTest;
 
-import lexa.test.TestClass;
 import lexa.test.TestClassInterface;
 import lexa.test.TestRun;
 
