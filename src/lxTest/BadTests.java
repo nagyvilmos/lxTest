@@ -6,7 +6,6 @@
 package lxTest;
 
 import lexa.test.TestClass;
-import lexa.test.TestException;
 import lexa.test.TestMethod;
 
 /**
@@ -17,26 +16,14 @@ public class BadTests
         extends TestClass
 {
 
-    @Override
-    public Boolean setUpClass() throws TestException
-    {
-        return true;
-    }
-
-    @Override
-    public Boolean tearDownClass() throws TestException
-    {
-        return true;
-    }
-    
     @TestMethod
-    public boolean failed() throws TestException
+    public boolean failed()
     {
         return false;
     }
     @TestMethod
-    public boolean exception() throws TestException
+    public boolean exception()
     {
-        throw new TestException("That did not work!");
+        throw new IllegalArgumentException("That did not work!");
     }
 }

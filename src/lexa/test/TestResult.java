@@ -43,6 +43,15 @@ public class TestResult
     {
         return (this.children != null);
     }
+    public boolean addResultIfFailed(TestResult result)
+    {
+        if (!result.passed())
+        {
+            this.addResult(result);
+            return true;
+        }
+        return false;
+    }
     public void addResult(TestResult result)
     {
         if (!this.isParent())

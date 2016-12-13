@@ -18,7 +18,12 @@ public class LexaTest
     {
         System.out.println(
             new TestRun(
-                new TestClass[]{new TestPass(), new BadTests()})
+                new TestClass[]
+                {
+                    new TestPass(),
+                    new ClassMethodTests(),
+                    new BadTests()
+                })
             .execute()
             .getReport(true,true)
         );

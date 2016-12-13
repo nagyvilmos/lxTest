@@ -6,7 +6,6 @@
 package lxTest;
 
 import lexa.test.TestClass;
-import lexa.test.TestException;
 import lexa.test.TestMethod;
 
 /**
@@ -22,33 +21,21 @@ public class TestPass
         super();
     }
 
-    @Override
-    public Boolean setUpClass() throws TestException
-    {
-        return true;
-    }
-
-    @Override
-    public Boolean tearDownClass() throws TestException
-    {
-        return true;
-    }
-    
     @TestMethod (order = 1)
-    public Boolean standardTest() throws TestException
+    public Boolean standardTest()
     {
         return true;
     }
     @TestMethod(order = 0, setUp = "setUpTest", tearDown = "tearDownTest")
-    public Boolean specialTest() throws TestException
+    public Boolean specialTest()
     {
         return true;
     }
-    public Boolean setUpTest() throws TestException
+    public Boolean setUpTest()
     {
         return true;
     }
-    public Boolean tearDownTest() throws TestException
+    public Boolean tearDownTest()
     {
         return true;
     }
@@ -57,7 +44,7 @@ public class TestPass
             arguments = "testArguments", 
             setUp = "setUpArguments",
             tearDown = "tearDownArguments")
-    public Boolean testArguments(Object arg) throws TestException
+    public Boolean testArguments(Object arg)
     {
         return true;
     }
@@ -65,11 +52,11 @@ public class TestPass
     {
         return new Object[]{1,2,3};
     }
-    public Boolean setUpArguments(Object arg) throws TestException
+    public Boolean setUpArguments(Object arg)
     {
         return true;
     }
-    public Boolean tearDownArguments(Object arg) throws TestException
+    public Boolean tearDownArguments(Object arg)
     {
         return true;
     }

@@ -17,97 +17,149 @@ import java.util.List;
 public abstract class TestClass
 {
     private final List<Test> tests;
-    
+    private Object[] arguments;
+    private Method classArgumentsMethod;
+    private Method setUpClassMethod;
+    private Method tearDownClassMethod;
     public TestClass()
     {
         // set up all the reflection for the class:
         this.tests = new ArrayList();
     }
-    public abstract Boolean setUpClass()
-            throws TestException;
-    public abstract Boolean tearDownClass()
-            throws TestException;
-    
-    public TestResult execute()
+    public TestResult execute(boolean stopOnError)
     {
         TestResult result = new TestResult(this.getClass().getCanonicalName());
         
-        TestResult setUp = this.setUpClassResult();
-        if (setUp != null)
+        if (result.addResultIfFailed(this.loadTestClass()))
         {
-            result.addResult(setUp);
             return result;
         }
-        
-        for (Test test : this.tests)
+
+        boolean useArgument = (this.classArgumentsMethod != null);
+
+        if (result.addResultIfFailed(this.classArgumentsResult()))
         {
-            result.addResult(this.executeTest(test));
-        }
-        
-        TestResult tearDown = this.tearDownClassResult();
-        if (tearDown != null)
-        {
-            result.addResult(tearDown);
             return result;
+        }
+
+        for (Object arg : this.arguments)
+        {
+            if (result.addResultIfFailed(
+                    this.setUpClassResult(useArgument, arg)) && stopOnError)
+            {
+                return result;
+            }
+            for (Test test : this.tests)
+            {
+                TestResult tr = this.executeTest(test, stopOnError,useArgument, arg);
+                result.addResult(tr);
+                if (stopOnError && !tr.passed())
+                {
+                    return result;
+                }
+            }
+            if (result.addResultIfFailed(this.tearDownClassResult(useArgument, arg)) && stopOnError)
+            {
+                return result;
+            }
         }
 
         return result;
     }
 
-    private TestResult executeTest(Test test)
+    private TestResult executeTest(Test test, boolean stopOnError,
+            boolean useClassArgument, Object classArgument)
     {
-        TestResult result = this.argumentResult(test);
+        TestResult result =
+                this.testArgumentsResult(test, useClassArgument, classArgument);
         if (result == null)
         {
-            if (test.arguments == null)
+            if (!useClassArgument && test.argumentsMethod == null)
             {
-                result = this.executeTestStep(test, false, 0);
+                result = this.executeTestStep(test, false, 0, stopOnError);
             }
             else
             {
-                result = new TestResult(test.test.getName());
+                result = new TestResult(this.getClass().getSimpleName() + '.' +
+                        test.testMethod.getName());
                 for (int step = 0;
-                        step < test.args.length;
+                        step < test.arguments.length;
                         step ++)
                 {
-                    result.addResult(
-                        this.executeTestStep(test, true, step));
+                    TestResult tr = this.executeTestStep(test, true, step, stopOnError);
+                    result.addResult(tr);
+                    if (stopOnError && !tr.passed())
+                    {
+                        break;
+                    }
                 }
             }
         }
         return result;
-            
     }
 
-    private TestResult setUpClassResult()
+    private TestResult loadTestClass()
     {
+        String resultName = this.getClass().getSimpleName() + ".loadTestClass";
         try {
             if (this.tests.isEmpty())
             {
                 Class testClass = this.getClass();
+                if (testClass.isAnnotationPresent(TestClassMethod.class))
+                {
+                    TestClassMethod classAnnotation =
+                            (TestClassMethod) testClass.getAnnotation(TestClassMethod.class);
+                    if (classAnnotation.arguments().isEmpty())
+                    {
+                        this.classArgumentsMethod = null;
+                        this.setUpClassMethod = classAnnotation.setUp().isEmpty() ? null :
+                                testClass.getMethod(classAnnotation.setUp());
+                        this.tearDownClassMethod = classAnnotation.tearDown().isEmpty() ? null :
+                                testClass.getMethod(classAnnotation.tearDown());
+                    }
+                    else
+                    {
+                        this.classArgumentsMethod = testClass.getMethod(classAnnotation.arguments());
+                        this.setUpClassMethod = classAnnotation.setUp().isEmpty() ? null :
+                                testClass.getMethod(classAnnotation.setUp(),
+                                        Object.class);
+                        this.tearDownClassMethod = classAnnotation.tearDown().isEmpty() ? null :
+                                testClass.getMethod(classAnnotation.tearDown(),
+                                        Object.class);
+                    }
+                }
                 for (Method method : testClass.getMethods())
                 {
                     if (method.isAnnotationPresent(TestMethod.class))
                     {
                         TestMethod testAnnotation = method.getAnnotation(TestMethod.class);
                         Test test = new Test();
-                        test.test = method;
+                        test.testMethod = method;
                         test.order = testAnnotation.order();
-                        if (testAnnotation.arguments().isEmpty())
+                        if (testAnnotation.arguments().isEmpty() &&
+                                this.classArgumentsMethod == null)
                         {
-                            test.arguments = null;
-                            test.setUp = testAnnotation.setUp().isEmpty() ? null :
+                            test.argumentsMethod = null;
+                            test.setUpMethod = testAnnotation.setUp().isEmpty() ? null :
                                     testClass.getMethod(testAnnotation.setUp());
-                            test.tearDown = testAnnotation.tearDown().isEmpty() ? null :
+                            test.tearDownMethod = testAnnotation.tearDown().isEmpty() ? null :
                                     testClass.getMethod(testAnnotation.tearDown());
                         }
                         else
                         {
-                            test.arguments = testClass.getMethod(testAnnotation.arguments());
-                            test.setUp = testAnnotation.setUp().isEmpty() ? null :
+                            if (this.classArgumentsMethod != null)
+                            {
+                                test.argumentsMethod = testAnnotation.arguments().isEmpty() ? null :
+                                        testClass.getMethod(testAnnotation.arguments(), Object.class);
+                            }
+                            else
+                            {
+                                test.argumentsMethod = testClass.getMethod(testAnnotation.arguments());
+                            }
+                            test.setUpMethod = testAnnotation.setUp().isEmpty() ? null :
                                     testClass.getMethod(testAnnotation.setUp(),
                                             Object.class);
-                            test.tearDown = testAnnotation.tearDown().isEmpty() ? null :
+                            test.tearDownMethod = testAnnotation.tearDown().isEmpty() ? null :
                                     testClass.getMethod(testAnnotation.tearDown(),
                                             Object.class);
                         }
@@ -125,35 +177,75 @@ public abstract class TestClass
                     }
                 }
             }
-            
-            if (!this.setUpClass())
+        }
+        catch (Exception ex)
+        {
+            return new TestResult(resultName,false,false,ex);
+        }
+        return new TestResult(resultName,true,true,null);        
+    }
+    private TestResult setUpClassResult(boolean useArg, Object arg)
+    {
+        String resultName = this.getClass().getSimpleName() + ".setUpClass";
+        if (useArg)
+        {
+            resultName = resultName + '(' + arg + ')';
+        }
+        try
+        {
+            if (this.setUpClassMethod != null)
             {
-                return new TestResult(this.getClass().getSimpleName() + ".setUpClass"
-                        ,true,false,null);
+                return methodCallResult(this.setUpClassMethod, useArg, arg);
             }
         }
         catch (Exception ex)
         {
-            return new TestResult(this.getClass().getSimpleName() + ".setUpClass"
-                    ,false,false,ex);
+            return new TestResult(resultName,false,false,ex);
         }
-        return null; // no result needed
+        return new TestResult(resultName,true,true,null);
     }
 
-    private TestResult argumentResult(Test test)
+    private TestResult classArgumentsResult()
     {
-        if (test.arguments == null)
+        String resultName = this.getClass().getSimpleName() + ".classArguments";
+        if (this.classArgumentsMethod == null)
         {
-            test.args = new Object[]{null};
+            this.arguments = new Object[]{null};
         }
         else
         {
             try {
-                test.args = (Object[])test.arguments.invoke(this);
+                this.arguments = (Object[])this.classArgumentsMethod.invoke(this);
             }
             catch (Exception ex)
             {
-                return new TestResult(test.arguments.getName(),false,false,ex);
+                return new TestResult(resultName,false,false,ex);
+            }
+        }
+        return new TestResult(resultName,true,true,null);
+    }
+
+    private TestResult testArgumentsResult(Test test, boolean useClassArgument, Object classArgument)
+    {
+        if (test.argumentsMethod == null)
+        {
+            test.arguments = new Object[]{classArgument};
+        }
+        else
+        {
+            try {
+                if (useClassArgument)
+                {
+                    test.arguments = (Object[])test.argumentsMethod.invoke(this, classArgument);
+                }
+                else
+                {
+                    test.arguments = (Object[])test.argumentsMethod.invoke(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new TestResult(test.argumentsMethod.getName(),false,false,ex);
             }
         }
         return null;
@@ -165,9 +257,11 @@ public abstract class TestClass
         {
             return new TestResult("[null method]",true,true,null);
         }
-        String methodName = useArgument ?
+        String methodName = 
+                this.getClass().getSimpleName() + '.' +
+                (useArgument ?
                 (method.getName() + '(' + argument + ')') :
-                method.getName();
+                method.getName());
         try {
             boolean result = (Boolean)(useArgument ?
                     method.invoke(this, argument) :
@@ -184,35 +278,39 @@ public abstract class TestClass
         }
     }
     
-    private TestResult tearDownClassResult()
+    private TestResult tearDownClassResult(boolean useArg, Object arg)
     {
-        try {
-            if (!this.tearDownClass())
+        String resultName = this.getClass().getSimpleName() + ".tearDownClass";
+        if (useArg)
+        {
+            resultName = resultName + '(' + arg + ')';
+        }
+        try
+        {
+            if (this.tearDownClassMethod != null)
             {
-                return new TestResult(this.getClass().getSimpleName() + ".tearDownClass"
-                        ,true,false,null);
+                return methodCallResult(this.setUpClassMethod, useArg, arg);
             }
         }
         catch (Exception ex)
         {
-            return new TestResult(this.getClass().getSimpleName() + ".tearDownClass"
-                    ,false,false,ex);
+            return new TestResult(resultName,false,false,ex);
         }
-        return null; // no result needed
+        return new TestResult(resultName,true,true,null);
     }
 
-    private TestResult executeTestStep(Test test, boolean useArg, int step)
+    private TestResult executeTestStep(Test test, boolean useArg, int step, boolean stopOnError)
     {
-        Object arg = useArg ? test.args[step] : null;
-        TestResult setUp = methodCallResult(test.setUp, useArg, arg);
+        Object arg = useArg ? test.arguments[step] : null;
+        TestResult setUp = methodCallResult(test.setUpMethod, useArg, arg);
         if (!setUp.passed())
         {
             return setUp;
         }
-        TestResult result = methodCallResult(test.test, useArg, arg);
+        TestResult result = methodCallResult(test.testMethod, useArg, arg);
         if (result.passed())
         {
-            TestResult tearDown = methodCallResult(test.tearDown, useArg, arg);
+            TestResult tearDown = methodCallResult(test.tearDownMethod, useArg, arg);
             if (!tearDown.passed())
             {
                 return tearDown;
@@ -234,10 +332,10 @@ public abstract class TestClass
     private class Test
     {
         int order;
-        Method setUp;
-        Method test;
-        Method tearDown;
-        Method arguments;
-        Object[] args; // populated list of arguments from the method;
+        Method setUpMethod;
+        Method testMethod;
+        Method tearDownMethod;
+        Method argumentsMethod;
+        Object[] arguments; // populated list of arguments from the method;
     }
 }

@@ -33,12 +33,21 @@ public class TestRun
     
     public TestResult execute()
     {
+        return this.execute(false);
+    }
+    public TestResult execute(boolean stopOnError)
+    {
         TestResult result = new TestResult("lexa.test.TestRun");
 
         // loop through the test classes
         for (TestClass test : this.classList)
         {
-            result.addResult(test.execute());
+            TestResult tr = test.execute(stopOnError);
+            result.addResult(tr);
+            if (stopOnError && !tr.passed())
+            {
+                break;
+            }
         }
         return result;
     }
