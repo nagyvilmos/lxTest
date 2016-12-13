@@ -12,21 +12,21 @@ package lexa.test;
 public class TestRun
 {
 
-    private final TestClass[] classList;
+    private final TestClassInterface[] classList;
 
-    public TestRun(TestClass testClass)
+    public TestRun(TestClassInterface testClass)
     {
-        this(new TestClass[]{testClass}, null);
+        this(new TestClassInterface[]{testClass}, null);
     }
-    public TestRun(TestClass testClass, String[] testList)
+    public TestRun(TestClassInterface testClass, String[] testList)
     {
-        this(new TestClass[]{testClass}, testList);
+        this(new TestClassInterface[]{testClass}, testList);
     }
-    public TestRun(TestClass[] classList)
+    public TestRun(TestClassInterface[] classList)
     {
         this(classList, null);
     }
-    public TestRun(TestClass[] classList, String[] testList)
+    public TestRun(TestClassInterface[] classList, String[] testList)
     {
         this.classList = classList;
     }
@@ -40,7 +40,7 @@ public class TestRun
         TestResult result = new TestResult("lexa.test.TestRun");
 
         // loop through the test classes
-        for (TestClass test : this.classList)
+        for (TestClassInterface test : this.classList)
         {
             TestResult tr = test.execute(stopOnError);
             result.addResult(tr);

@@ -2,7 +2,7 @@
  * ================================================================================
  * Lexa - Property of William Norman-Walker
  * --------------------------------------------------------------------------------
- * LexaTest.java
+ * TestClassInterface.java
  *--------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: December 2016
@@ -12,36 +12,24 @@
  * ---------    --- ----------  --------------------------------------------------
  *================================================================================
  */
-package lxTest;
-
-import lexa.test.TestClass;
-import lexa.test.TestClassInterface;
-import lexa.test.TestRun;
+package lexa.test;
 
 /**
- * Test handler to make sure the library works
+ * Interface for a test case
+ * The interface is used where the framework
+ * will not support the test case or reflection
+ * is not required.
  * @author william
  * @since 2016-12
  */
-public class LexaTest
+public interface TestClassInterface
 {
+
     /**
-     * Main routine, fires off all the test cases.
-     * @param args not used.
+     * Execute the test case
+     * @param stopOnError
+     * @return The {@link TestResult result} of the tests.
      */
-    public static void main (String ... args)
-    {
-        System.out.println(
-            new TestRun(
-                new TestClassInterface[]
-                {
-                    new TestPass(),
-                    new ClassMethodTests(),
-                    new BadTests(),
-                    new InterfaceTest()
-                })
-            .execute()
-            .getReport(true,true)
-        );
-    }
+    TestResult execute(boolean stopOnError);
+    
 }

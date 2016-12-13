@@ -1,7 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * ================================================================================
+ * Lexa - Property of William Norman-Walker
+ * --------------------------------------------------------------------------------
+ * TestClass.java
+ *--------------------------------------------------------------------------------
+ * Author:  William Norman-Walker
+ * Created: December 2016
+ *--------------------------------------------------------------------------------
+ * Change Log
+ * Date:        By: Ref:        Description:
+ * ---------    --- ----------  --------------------------------------------------
+ *================================================================================
  */
 package lexa.test;
 
@@ -11,21 +20,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Abstract super class for test cases
+ * This class is extended for a test case.
+ * Each test method must use the annotation {@link TestMethod @TestMethod}.
+ * If there are any class level methods for arguments, set up or tear down then
+ * use the annotation {@link TestClassMethod @TestClassMethod}.
+ * 
  * @author william
+ * @since 2016-12
  */
 public abstract class TestClass
+        implements TestClassInterface
 {
-    private final List<Test> tests;
+    /** Tests to be performed */
+    private final List<Test> tests = new ArrayList();
+    /** Class level arguments */
     private Object[] arguments;
+    /** Method to return class arguments */
     private Method classArgumentsMethod;
+    /** Method to set up the class before testing */
     private Method setUpClassMethod;
+    /** Method to tear down the class after testing */
     private Method tearDownClassMethod;
-    public TestClass()
-    {
-        // set up all the reflection for the class:
-        this.tests = new ArrayList();
-    }
+
+    @Override
     public TestResult execute(boolean stopOnError)
     {
         TestResult result = new TestResult(this.getClass().getCanonicalName());

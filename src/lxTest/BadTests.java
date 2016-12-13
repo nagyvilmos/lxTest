@@ -1,7 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * ================================================================================
+ * Lexa - Property of William Norman-Walker
+ * --------------------------------------------------------------------------------
+ * BadTests.java
+ *--------------------------------------------------------------------------------
+ * Author:  William Norman-Walker
+ * Created: December 2016
+ *--------------------------------------------------------------------------------
+ * Change Log
+ * Date:        By: Ref:        Description:
+ * ---------    --- ----------  --------------------------------------------------
+ *================================================================================
  */
 package lxTest;
 
@@ -9,18 +18,28 @@ import lexa.test.TestClass;
 import lexa.test.TestMethod;
 
 /**
- *
+ * Test that the failure of tests is correctly picked up.
  * @author william
+ * @since 2016-12
  */
 public class BadTests
         extends TestClass
 {
 
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestMethod
     public boolean failed()
     {
         return false;
     }
+
+    /**
+     * Test that throws an exception
+     * @return  no return is made;
+     */
     @TestMethod
     public boolean exception()
     {

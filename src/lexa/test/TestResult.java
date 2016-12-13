@@ -29,6 +29,11 @@ public class TestResult
         this.children = new ArrayList();
     }
 
+    public TestResult(String name, boolean pass)
+    {
+        this(name, true, pass, null);
+    }
+    
     public TestResult(String name, boolean complete, boolean pass, Throwable exception)
     {
         this.name = name;
