@@ -307,7 +307,7 @@ public abstract class TestClass
         {
             if (this.tearDownClassMethod != null)
             {
-                return methodCallResult(this.setUpClassMethod, useArg, arg);
+                return methodCallResult(this.tearDownClassMethod, useArg, arg);
             }
         }
         catch (Exception ex)
