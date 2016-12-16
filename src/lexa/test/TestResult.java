@@ -61,6 +61,12 @@ public class TestResult
     {
         if (!this.isParent())
             throw new IllegalArgumentException("Can only add children to a parent");
+        if (result.isParent() && result.children.size() == 1)
+        {
+            // ignore parent container with a single test
+            this.addResult(result.children.get(0));
+            return;
+        }
         this.children.add(result);
     }
     public String getName()
@@ -183,4 +189,12 @@ public class TestResult
                 return false;
         return true;
     }
+
+    @Override
+    public String toString()
+    {
+        return "TestResult{" + name + 
+                ", complete=" + complete + ", pass=" + pass + ", exception=" + exception + '}';
+    }
+    
 }
