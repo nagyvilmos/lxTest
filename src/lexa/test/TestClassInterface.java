@@ -27,7 +27,7 @@ public interface TestClassInterface
 
     /**
      * Execute the test case
-     * @param stopOnError
+     * @param stopOnError stop if an error is encountered.
      * @return The {@link TestResult result} of the tests.
      */
     TestResult execute(boolean stopOnError);
