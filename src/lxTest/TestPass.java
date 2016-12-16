@@ -65,6 +65,7 @@ public class TestPass
 
     /**
      * Test with arguments
+     * @param arg step argument
      * @return {@code true}
      */
     @TestMethod(
@@ -87,6 +88,7 @@ public class TestPass
     
     /**
      * Set up with arguments
+     * @param arg step argument
      * @return {@code true}
      */
     public Boolean setUpArguments(Object arg)
@@ -96,6 +98,7 @@ public class TestPass
     
     /**
      * Tear down with arguments
+     * @param arg step argument
      * @return {@code true}
      */
     public Boolean tearDownArguments(Object arg)
