@@ -15,7 +15,7 @@
 package lxTest;
 
 import lexa.test.TestClass;
-import lexa.test.TestMethod;
+import lexa.test.TestAnnotation;
 
 /**
  * Tests that will all pass
@@ -29,7 +29,7 @@ public class TestPass
      * Stand alone test
      * @return {@code true}
      */
-    @TestMethod (order = 1)
+    @TestAnnotation (order = 1)
     public Boolean standardTest()
     {
         return true;
@@ -39,7 +39,7 @@ public class TestPass
      * Test with set up and tear down
      * @return {@code true}
      */
-    @TestMethod(order = 2, setUp = "setUpTest", tearDown = "tearDownTest")
+    @TestAnnotation(order = 2, setUp = "setUpTest", tearDown = "tearDownTest")
     public Boolean specialTest()
     {
         return true;
@@ -68,7 +68,7 @@ public class TestPass
      * @param arg step argument
      * @return {@code true}
      */
-    @TestMethod(
+    @TestAnnotation(
             order = 99,
             arguments = "testArguments", 
             setUp = "setUpArguments",

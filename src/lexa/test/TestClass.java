@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Abstract super class for test cases
  * This class is extended for a test case.
- * Each test method must use the annotation {@link TestMethod @TestMethod}.
+ * Each test method must use the annotation {@link TestAnnotation @TestAnnotation}.
  * If there are any class level methods for arguments, set up or tear down then
  * use the annotation {@link TestClassMethod @TestClassMethod}.
  * 
@@ -123,10 +123,14 @@ public abstract class TestClass
             if (this.tests.isEmpty())
             {
                 Class testClass = this.getClass();
-                if (testClass.isAnnotationPresent(TestClassMethod.class))
+                if (testClass.isAnnotationPresent(TestAnnotation.class))
                 {
-                    TestClassMethod classAnnotation =
-                            (TestClassMethod) testClass.getAnnotation(TestClassMethod.class);
+                    TestAnnotation classAnnotation =
+                            (TestAnnotation) testClass.getAnnotation(TestAnnotation.class);
+                    if (classAnnotation.order() != Integer.MAX_VALUE)
+                    {
+                        throw new IllegalArgumentException("Class annotation may not define order");
+                    }
                     if (classAnnotation.arguments().isEmpty())
                     {
                         this.classArgumentsMethod = null;
@@ -148,9 +152,9 @@ public abstract class TestClass
                 }
                 for (Method method : testClass.getMethods())
                 {
-                    if (method.isAnnotationPresent(TestMethod.class))
+                    if (method.isAnnotationPresent(TestAnnotation.class))
                     {
-                        TestMethod testAnnotation = method.getAnnotation(TestMethod.class);
+                        TestAnnotation testAnnotation = method.getAnnotation(TestAnnotation.class);
                         Test test = new Test();
                         test.testMethod = method;
                         test.order = testAnnotation.order();
@@ -336,17 +340,7 @@ public abstract class TestClass
         }
         return result;
     }
-    
-//    public TestResult execute(String testMethod)
-//    {
-//        
-//    }
-//
-//    public TestResult execute(String testMethod, Object argument)
-//    {
-//        
-//    }
-    
+
     private class Test
     {
         int order;

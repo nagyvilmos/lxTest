@@ -15,15 +15,14 @@
 package lxTest;
 
 import lexa.test.TestClass;
-import lexa.test.TestClassMethod;
-import lexa.test.TestMethod;
+import lexa.test.TestAnnotation;
 
 /**
  * Test the class methods are okay
  * @author william
  * @since 2016-12
  */
-@TestClassMethod(arguments = "classArguments", setUp = "classSetUp", tearDown = "classTearDown")
+@TestAnnotation(arguments = "classArguments", setUp = "classSetUp", tearDown = "classTearDown")
 public class ClassMethodTests
         extends TestClass
 {
@@ -61,7 +60,7 @@ public class ClassMethodTests
      * @param arg the current test
      * @return {@code true}
      */
-    @TestMethod(setUp = "testSetUp", tearDown = "testTearDown")
+    @TestAnnotation(setUp = "testSetUp", tearDown = "testTearDown")
     public boolean test(Object arg)
     {
         return true;
@@ -93,7 +92,7 @@ public class ClassMethodTests
      * @param arg the current test
      * @return {@code true}
      */
-    @TestMethod(arguments = "doubleArguments")
+    @TestAnnotation(arguments = "doubleArguments")
     public boolean arguments(Object arg)
     {
         return true;

@@ -15,7 +15,7 @@
 package lxTest;
 
 import lexa.test.TestClass;
-import lexa.test.TestMethod;
+import lexa.test.TestAnnotation;
 
 /**
  * Test that the failure of tests is correctly picked up.
@@ -30,7 +30,7 @@ public class BadTests
      * Test that fails
      * @return {@code false}
      */
-    @TestMethod
+    @TestAnnotation
     public boolean failed()
     {
         return false;
@@ -40,7 +40,7 @@ public class BadTests
      * Test that throws an exception
      * @return  no return is made;
      */
-    @TestMethod
+    @TestAnnotation
     public boolean exception()
     {
         throw new IllegalArgumentException("That did not work!");

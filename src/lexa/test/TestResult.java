@@ -20,6 +20,10 @@ public class TestResult
     private final Throwable exception;
     private final List<TestResult> children;
     
+    /**
+     *
+     * @param name
+     */
     public TestResult(String name)
     {
         this.name = name;
@@ -29,11 +33,23 @@ public class TestResult
         this.children = new ArrayList();
     }
 
+    /**
+     *
+     * @param name
+     * @param pass
+     */
     public TestResult(String name, boolean pass)
     {
         this(name, true, pass, null);
     }
     
+    /**
+     *
+     * @param name
+     * @param complete
+     * @param pass
+     * @param exception
+     */
     public TestResult(String name, boolean complete, boolean pass, Throwable exception)
     {
         this.name = name;
@@ -44,10 +60,20 @@ public class TestResult
         this.children = null;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isParent()
     {
         return (this.children != null);
     }
+
+    /**
+     *
+     * @param result
+     * @return
+     */
     public boolean addResultIfFailed(TestResult result)
     {
         if (!result.passed())
@@ -57,6 +83,11 @@ public class TestResult
         }
         return false;
     }
+
+    /**
+     *
+     * @param result
+     */
     public void addResult(TestResult result)
     {
         if (!this.isParent())
@@ -69,16 +100,29 @@ public class TestResult
         }
         this.children.add(result);
     }
+
+    /**
+     *
+     * @return
+     */
     public String getName()
     {
         return this.name;
     }
 
+    /**
+     *
+     * @return
+     */
     public Throwable getException()
     {
         return this.exception;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCompleteCount()
     {
         if (!this.isParent())
@@ -89,6 +133,10 @@ public class TestResult
         return count;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPassCount()
     {
         if (!this.isParent())
@@ -98,6 +146,11 @@ public class TestResult
             count+= result.getPassCount();
         return count;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getTestCount()
     {
         if (!this.isParent())
@@ -108,10 +161,21 @@ public class TestResult
         return count;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getReport()
     {
         return this.getReport(true, true);
     }
+
+    /**
+     *
+     * @param details
+     * @param exceptions
+     * @return
+     */
     public String getReport(boolean details, boolean exceptions)
     {
         StringBuilder report = new StringBuilder();
@@ -170,6 +234,10 @@ public class TestResult
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean passed()
     {
         if (!this.isParent())
@@ -180,6 +248,10 @@ public class TestResult
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean completed()
     {
         if (!this.isParent())

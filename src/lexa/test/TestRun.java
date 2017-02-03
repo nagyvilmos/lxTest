@@ -14,27 +14,58 @@ public class TestRun
 
     private final TestClassInterface[] classList;
 
+    /**
+     *
+     * @param testClass
+     */
     public TestRun(TestClassInterface testClass)
     {
         this(new TestClassInterface[]{testClass}, null);
     }
+
+    /**
+     *
+     * @param testClass
+     * @param testList
+     */
     public TestRun(TestClassInterface testClass, String[] testList)
     {
         this(new TestClassInterface[]{testClass}, testList);
     }
+
+    /**
+     *
+     * @param classList
+     */
     public TestRun(TestClassInterface[] classList)
     {
         this(classList, null);
     }
+
+    /**
+     *
+     * @param classList
+     * @param testList
+     */
     public TestRun(TestClassInterface[] classList, String[] testList)
     {
         this.classList = classList;
     }
     
+    /**
+     *
+     * @return
+     */
     public TestResult execute()
     {
         return this.execute(false);
     }
+
+    /**
+     *
+     * @param stopOnError
+     * @return
+     */
     public TestResult execute(boolean stopOnError)
     {
         TestResult result = new TestResult("lexa.test.TestRun");
