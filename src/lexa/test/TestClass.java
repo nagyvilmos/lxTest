@@ -24,7 +24,7 @@ import java.util.List;
  * This class is extended for a test case.
  * Each test method must use the annotation {@link TestAnnotation @TestAnnotation}.
  * If there are any class level methods for arguments, set up or tear down then
- * use the annotation {@link TestClassMethod @TestClassMethod}.
+ * use the annotation on the class definition.
  * 
  * @author william
  * @since 2016-12

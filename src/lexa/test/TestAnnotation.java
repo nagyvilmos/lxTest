@@ -55,7 +55,7 @@ public @interface TestAnnotation
 
     /**
      *
-     * Setting at the class, this will cause an {@see IllegalArgumentException}
+     * Setting at the class, this will cause an {@link IllegalArgumentException}
      * to be thrown.
      * @return
      */
