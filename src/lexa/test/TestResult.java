@@ -19,7 +19,7 @@ public class TestResult
     private final Boolean pass;
     private final Throwable exception;
     private final List<TestResult> children;
-    
+
     /**
      *
      * @param name
@@ -42,7 +42,7 @@ public class TestResult
     {
         this(name, true, pass, null);
     }
-    
+
     /**
      *
      * @param name
@@ -180,7 +180,7 @@ public class TestResult
     {
         StringBuilder report = new StringBuilder();
         this.buildReport(report, true, details, exceptions);
-        
+
         return report.toString();
     }
 
@@ -199,13 +199,13 @@ public class TestResult
                     .append("================================================== ======== ========\n");
             }
         }
-            
+
         if (this.isParent() && (exceptions || details))
         {
             for (TestResult result : this.children)
                 result.buildReport(report, false, details, exceptions);
         }
-        
+
         if (details || !this.passed())
         {
             if (this.isParent())
@@ -227,10 +227,28 @@ public class TestResult
                         .append('\n');
             }
         }
-        if (exceptions && this.getException() != null)
+        if (exceptions)
         {
-            report.append(this.getException())
-                    .append('\n');
+            Throwable ex =  this.getException();
+            if (ex != null)
+            {
+                report.append("  >> ")
+                        .append(this.getException())
+                        .append('\n')
+                        .append("  >> Cause:\n");
+                for ( StackTraceElement ste : ex.getStackTrace())
+                {
+                    report.append("  >> ")
+                            .append(ste.getClassName())
+                            .append('.')
+                            .append(ste.getMethodName())
+                            .append(" at ")
+                            .append(ste.getLineNumber())
+                            .append('\n');
+                    if (ste.getClassName().indexOf("lexa.test.")>-1)
+                            break;
+                }
+            }
         }
     }
 
@@ -265,8 +283,8 @@ public class TestResult
     @Override
     public String toString()
     {
-        return "TestResult{" + name + 
+        return "TestResult{" + name +
                 ", complete=" + complete + ", pass=" + pass + ", exception=" + exception + '}';
     }
-    
+
 }
