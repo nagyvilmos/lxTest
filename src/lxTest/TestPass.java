@@ -29,7 +29,7 @@ public class TestPass
     @TestAnnotation (order = 1)
     public TestResult standardTest()
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -39,7 +39,7 @@ public class TestPass
     @TestAnnotation(order = 2, setUp = "setUpTest", tearDown = "tearDownTest")
     public TestResult specialTest()
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -48,7 +48,7 @@ public class TestPass
      */
     public TestResult setUpTest()
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -57,7 +57,7 @@ public class TestPass
      */
     public TestResult tearDownTest()
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -72,7 +72,7 @@ public class TestPass
             tearDown = "tearDownArguments")
     public TestResult testArguments(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
     /**
      * Arguments for test
@@ -90,7 +90,7 @@ public class TestPass
      */
     public TestResult setUpArguments(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -100,6 +100,6 @@ public class TestPass
      */
     public TestResult tearDownArguments(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 }

@@ -335,4 +335,21 @@ public class TestResult
         return "TestResult{" + name +
                 ", complete=" + complete + ", pass=" + pass + ", exception=" + exception + '}';
     }
+
+    public static TestResult result(boolean result)
+    {
+        return TestResult.result(true, result, "Test returned false");
+    }
+
+    public static TestResult result(Object expected, Object result)
+    {
+        return TestResult.result(expected, result,
+                "Expected result of [" + expected + "], result was [" + result + "]");
+    }
+    public static TestResult result(Object expected, Object result, String message)
+    {
+        boolean passed = (expected == null && result == null) ||
+                (expected != null && expected.equals(result));
+        return new TestResult(passed, message);
+    }
 }

@@ -39,7 +39,7 @@ public class ClassMethodTests
      */
     public TestResult classSetUp(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -49,7 +49,7 @@ public class ClassMethodTests
      */
     public TestResult classTearDown(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -60,7 +60,7 @@ public class ClassMethodTests
     @TestAnnotation(setUp = "testSetUp", tearDown = "testTearDown")
     public TestResult test(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -70,7 +70,7 @@ public class ClassMethodTests
      */
     public TestResult testSetUp(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ClassMethodTests
      */
     public TestResult testTearDown(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
 
@@ -92,7 +92,7 @@ public class ClassMethodTests
     @TestAnnotation(arguments = "doubleArguments")
     public TestResult arguments(Object arg)
     {
-        return new TestResult(true);
+        return TestResult.result(true);
     }
 
     /**

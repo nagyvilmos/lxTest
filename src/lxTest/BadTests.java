@@ -1,16 +1,12 @@
 /*
- * ================================================================================
+ *==============================================================================
  * Lexa - Property of William Norman-Walker
- * --------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * BadTests.java
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: December 2016
- *--------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Ref:        Description:
- * ---------    --- ----------  --------------------------------------------------
- *================================================================================
+ *==============================================================================
  */
 package lxTest;
 
@@ -34,7 +30,7 @@ public class BadTests
     @TestAnnotation
     public TestResult failed()
     {
-        return new TestResult(false);
+        return TestResult.result(false);
     }
 
     /**
@@ -57,7 +53,8 @@ public class BadTests
     public TestResult completeWithMessage()
     {
         // note it's marked as passed, but will become failed due to exception
-        return new TestResult(false,"Ths has failed with a message to say why");
+        return TestResult.result(true, false,
+                "Ths has failed with a message to say why");
     }
     /**
      * Test that throws an exception
