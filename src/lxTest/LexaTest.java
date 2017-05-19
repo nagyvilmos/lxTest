@@ -38,5 +38,8 @@ public class LexaTest
             .execute()
             .getReport(true,true)
         );
+        System.out.println(
+                "     **** Note: the tests in BadTest should ALL fail"
+        );
     }
 }

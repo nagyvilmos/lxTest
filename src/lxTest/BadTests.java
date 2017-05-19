@@ -48,6 +48,17 @@ public class BadTests
         return new TestResult(true, true,
                 new Exception("Ths has completed with an exception to say why"));
     }
+
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
+    @TestAnnotation
+    public TestResult completeWithMessage()
+    {
+        // note it's marked as passed, but will become failed due to exception
+        return new TestResult(false,"Ths has failed with a message to say why");
+    }
     /**
      * Test that throws an exception
      * @return  no return is made;

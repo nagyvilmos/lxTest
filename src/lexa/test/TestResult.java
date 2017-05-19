@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class TestResult
 {
+
+    private final String message;
     private final String name;
     private final Boolean complete;
     private final Boolean pass;
@@ -27,6 +29,7 @@ public class TestResult
         this.pass = rename.pass;
         this.exception = rename.exception;
         this.children = rename.children;
+        this.message = rename.message;
     }
     /**
      *
@@ -38,6 +41,7 @@ public class TestResult
         this.complete = null;
         this.pass = null;
         this.exception = null;
+        this.message = null;
         this.children = new ArrayList();
     }
     /**
@@ -46,16 +50,23 @@ public class TestResult
      */
     public TestResult(boolean pass)
     {
-        this(null, true, pass, null);
+        this(pass, null);
     }
-    /**
+    public TestResult(boolean pass, String message)
+    {
+        this(null, true, pass, null, message);
+    }    /**
      *
      * @param name
      * @param pass
      */
     public TestResult(String name, boolean pass)
     {
-        this(name, true, pass, null);
+        this(name, pass, null);
+    }
+    public TestResult(String name, boolean pass, String message)
+    {
+        this(name, true, pass, null, message);
     }
     /**
      *
@@ -77,12 +88,18 @@ public class TestResult
      */
     public TestResult(String name, boolean complete, boolean pass, Throwable exception)
     {
+        this(name, true, true, exception, null);
+    }
+    public TestResult(String name, boolean complete, boolean pass, Throwable exception, String message)
+    {
+
         this.name = name;
         // The three items MUST be consistant:
         this.pass = pass && complete && (exception == null);
-        this.complete = complete;
+        this.complete = complete && (exception == null);
         this.exception = exception;
         this.children = null;
+        this.message = this.pass ? null : message;
     }
 
     /**
@@ -250,6 +267,13 @@ public class TestResult
                         .append(this.completed() ? "      YES" : "       NO")
                         .append(this.passed() ? "      YES" : "       NO")
                         .append('\n');
+                if (this.message != null)
+                {
+                    report
+                            .append("     ")
+                            .append(this.message)
+                            .append('\n');
+                }
             }
         }
         if (exceptions)
