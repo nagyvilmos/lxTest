@@ -1,21 +1,18 @@
 /*
- * ================================================================================
+ *==============================================================================
  * Lexa - Property of William Norman-Walker
- * --------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * TestPass.java
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: December 2016
- *--------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Ref:        Description:
- * ---------    --- ----------  --------------------------------------------------
- *================================================================================
+ *==============================================================================
  */
 package lxTest;
 
 import lexa.test.TestClass;
 import lexa.test.TestAnnotation;
+import lexa.test.TestResult;
 
 /**
  * Tests that will all pass
@@ -30,9 +27,9 @@ public class TestPass
      * @return {@code true}
      */
     @TestAnnotation (order = 1)
-    public Boolean standardTest()
+    public TestResult standardTest()
     {
-        return true;
+        return new TestResult(true);
     }
 
     /**
@@ -40,27 +37,27 @@ public class TestPass
      * @return {@code true}
      */
     @TestAnnotation(order = 2, setUp = "setUpTest", tearDown = "tearDownTest")
-    public Boolean specialTest()
+    public TestResult specialTest()
     {
-        return true;
+        return new TestResult(true);
     }
-    
+
     /**
      * Set up for test
      * @return {@code true}
      */
-    public Boolean setUpTest()
+    public TestResult setUpTest()
     {
-        return true;
+        return new TestResult(true);
     }
 
     /**
      * tear down test
      * @return {@code true}
      */
-    public Boolean tearDownTest()
+    public TestResult tearDownTest()
     {
-        return true;
+        return new TestResult(true);
     }
 
     /**
@@ -70,12 +67,12 @@ public class TestPass
      */
     @TestAnnotation(
             order = 99,
-            arguments = "testArguments", 
+            arguments = "testArguments",
             setUp = "setUpArguments",
             tearDown = "tearDownArguments")
-    public Boolean testArguments(Object arg)
+    public TestResult testArguments(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
     /**
      * Arguments for test
@@ -85,24 +82,24 @@ public class TestPass
     {
         return new Object[]{1,2,3};
     }
-    
+
     /**
      * Set up with arguments
      * @param arg step argument
      * @return {@code true}
      */
-    public Boolean setUpArguments(Object arg)
+    public TestResult setUpArguments(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
-    
+
     /**
      * Tear down with arguments
      * @param arg step argument
      * @return {@code true}
      */
-    public Boolean tearDownArguments(Object arg)
+    public TestResult tearDownArguments(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
 }

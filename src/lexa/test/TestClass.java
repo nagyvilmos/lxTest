@@ -25,7 +25,7 @@ import java.util.List;
  * Each test method must use the annotation {@link TestAnnotation @TestAnnotation}.
  * If there are any class level methods for arguments, set up or tear down then
  * use the annotation on the class definition.
- * 
+ *
  * @author william
  * @since 2016-12
  */
@@ -47,7 +47,7 @@ public abstract class TestClass
     public TestResult execute(boolean stopOnError)
     {
         TestResult result = new TestResult(this.getClass().getCanonicalName());
-        
+
         if (result.addResultIfFailed(this.loadTestClass()))
         {
             return result;
@@ -204,7 +204,7 @@ public abstract class TestClass
         {
             return new TestResult(resultName,false,false,ex);
         }
-        return new TestResult(resultName,true,true,null);        
+        return new TestResult(resultName,true,true,null);
     }
     private TestResult setUpClassResult(boolean useArg, Object arg)
     {
@@ -279,16 +279,21 @@ public abstract class TestClass
         {
             return new TestResult("[null method]",true,true,null);
         }
-        String methodName = 
+        String methodName =
                 this.getClass().getSimpleName() + '.' +
                 (useArgument ?
                 (method.getName() + '(' + argument + ')') :
                 method.getName());
         try {
-            boolean result = (Boolean)(useArgument ?
+            return new TestResult(methodName,
+                    (TestResult)(useArgument ?
                     method.invoke(this, argument) :
-                    method.invoke(this));
-            return new TestResult(methodName, true,result,null);
+                    method.invoke(this))
+            );
+//            boolean result = (Boolean)(useArgument ?
+//                    method.invoke(this, argument) :
+//                    method.invoke(this));
+//            return new TestResult(methodName, true,result,null);
         }
         catch (InvocationTargetException ex)
         {
@@ -299,7 +304,7 @@ public abstract class TestClass
             return new TestResult(methodName,false,false,ex);
         }
     }
-    
+
     private TestResult tearDownClassResult(boolean useArg, Object arg)
     {
         String resultName = this.getClass().getSimpleName() + ".tearDownClass";

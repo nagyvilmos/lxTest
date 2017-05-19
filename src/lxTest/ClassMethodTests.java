@@ -6,16 +6,13 @@
  *--------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: December 2016
- *--------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Ref:        Description:
- * ---------    --- ----------  --------------------------------------------------
  *================================================================================
  */
 package lxTest;
 
 import lexa.test.TestClass;
 import lexa.test.TestAnnotation;
+import lexa.test.TestResult;
 
 /**
  * Test the class methods are okay
@@ -34,15 +31,15 @@ public class ClassMethodTests
     {
         return new Object[]{"this", "that", "other"};
     }
-    
+
     /**
      * Class set up
      * @param arg the current test
      * @return {@code true}
      */
-    public boolean classSetUp(Object arg)
+    public TestResult classSetUp(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
 
     /**
@@ -50,9 +47,9 @@ public class ClassMethodTests
      * @param arg the current test
      * @return {@code true}
      */
-    public boolean classTearDown(Object arg)
+    public TestResult classTearDown(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
 
     /**
@@ -61,9 +58,9 @@ public class ClassMethodTests
      * @return {@code true}
      */
     @TestAnnotation(setUp = "testSetUp", tearDown = "testTearDown")
-    public boolean test(Object arg)
+    public TestResult test(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
 
     /**
@@ -71,9 +68,9 @@ public class ClassMethodTests
      * @param arg the current test
      * @return {@code true}
      */
-    public boolean testSetUp(Object arg)
+    public TestResult testSetUp(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
 
     /**
@@ -81,9 +78,9 @@ public class ClassMethodTests
      * @param arg the current test
      * @return {@code true}
      */
-    public boolean testTearDown(Object arg)
+    public TestResult testTearDown(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
 
 
@@ -93,9 +90,9 @@ public class ClassMethodTests
      * @return {@code true}
      */
     @TestAnnotation(arguments = "doubleArguments")
-    public boolean arguments(Object arg)
+    public TestResult arguments(Object arg)
     {
-        return true;
+        return new TestResult(true);
     }
 
     /**

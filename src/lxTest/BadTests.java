@@ -16,6 +16,7 @@ package lxTest;
 
 import lexa.test.TestClass;
 import lexa.test.TestAnnotation;
+import lexa.test.TestResult;
 
 /**
  * Test that the failure of tests is correctly picked up.
@@ -31,17 +32,28 @@ public class BadTests
      * @return {@code false}
      */
     @TestAnnotation
-    public boolean failed()
+    public TestResult failed()
     {
-        return false;
+        return new TestResult(false);
     }
 
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
+    @TestAnnotation
+    public TestResult completeWithException()
+    {
+        // note it's marked as passed, but will become failed due to exception
+        return new TestResult(true, true,
+                new Exception("Ths has completed with an exception to say why"));
+    }
     /**
      * Test that throws an exception
      * @return  no return is made;
      */
     @TestAnnotation
-    public boolean exception()
+    public TestResult exception()
     {
         throw new IllegalArgumentException("That did not work!");
     }

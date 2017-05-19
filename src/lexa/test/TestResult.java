@@ -20,6 +20,14 @@ public class TestResult
     private final Throwable exception;
     private final List<TestResult> children;
 
+    public TestResult(String name, TestResult rename)
+    {
+        this.name = name;
+        this.complete = rename.complete;
+        this.pass = rename.pass;
+        this.exception = rename.exception;
+        this.children = rename.children;
+    }
     /**
      *
      * @param name
@@ -32,7 +40,14 @@ public class TestResult
         this.exception = null;
         this.children = new ArrayList();
     }
-
+    /**
+     *
+     * @param pass
+     */
+    public TestResult(boolean pass)
+    {
+        this(null, true, pass, null);
+    }
     /**
      *
      * @param name
@@ -41,6 +56,16 @@ public class TestResult
     public TestResult(String name, boolean pass)
     {
         this(name, true, pass, null);
+    }
+    /**
+     *
+     * @param complete
+     * @param pass
+     * @param exception
+     */
+    public TestResult(boolean complete, boolean pass, Throwable exception)
+    {
+        this(null,complete, pass, exception);
     }
 
     /**
@@ -55,7 +80,7 @@ public class TestResult
         this.name = name;
         // The three items MUST be consistant:
         this.pass = pass && complete && (exception == null);
-        this.complete = complete && (exception == null);;
+        this.complete = complete;
         this.exception = exception;
         this.children = null;
     }
@@ -245,7 +270,7 @@ public class TestResult
                             .append(" at ")
                             .append(ste.getLineNumber())
                             .append('\n');
-                    if (ste.getClassName().indexOf("lexa.test.")>-1)
+                    if (ste.getClassName().startsWith("lexa.test."))
                             break;
                 }
             }
@@ -286,5 +311,4 @@ public class TestResult
         return "TestResult{" + name +
                 ", complete=" + complete + ", pass=" + pass + ", exception=" + exception + '}';
     }
-
 }
