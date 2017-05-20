@@ -60,6 +60,18 @@ public class TestPass
         return TestResult.result(true);
     }
 
+    @TestAnnotation (order = 4)
+    public TestResult nullTest()
+    {
+        return TestResult.isNull(null);
+    }
+
+    @TestAnnotation (order = 5)
+    public TestResult notNullTest()
+    {
+        return TestResult.notNull("");
+    }
+
     /**
      * Test with arguments
      * @param arg step argument

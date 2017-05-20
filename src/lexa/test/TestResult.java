@@ -336,6 +336,16 @@ public class TestResult
                 ", complete=" + complete + ", pass=" + pass + ", exception=" + exception + '}';
     }
 
+    public static TestResult isNull(Object result)
+    {
+        return TestResult.result(null, result, "Result is not null");
+    }
+
+    public static TestResult notNull(Object result)
+    {
+        return TestResult.result(true, result != null, "Result is null");
+    }
+
     public static TestResult result(boolean result)
     {
         return TestResult.result(true, result, "Test returned false");

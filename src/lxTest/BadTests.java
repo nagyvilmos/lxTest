@@ -27,7 +27,7 @@ public class BadTests
      * Test that fails
      * @return {@code false}
      */
-    @TestAnnotation
+    @TestAnnotation (order = 1)
     public TestResult failed()
     {
         return TestResult.result(false);
@@ -37,7 +37,7 @@ public class BadTests
      * Test that fails
      * @return {@code false}
      */
-    @TestAnnotation
+    @TestAnnotation (order = 2)
     public TestResult completeWithException()
     {
         // note it's marked as passed, but will become failed due to exception
@@ -49,7 +49,7 @@ public class BadTests
      * Test that fails
      * @return {@code false}
      */
-    @TestAnnotation
+    @TestAnnotation (order = 3)
     public TestResult completeWithMessage()
     {
         // note it's marked as passed, but will become failed due to exception
@@ -60,9 +60,23 @@ public class BadTests
      * Test that throws an exception
      * @return  no return is made;
      */
-    @TestAnnotation
+    @TestAnnotation (order = 4)
     public TestResult exception()
     {
         throw new IllegalArgumentException("That did not work!");
     }
+
+
+    @TestAnnotation (order = 5)
+    public TestResult nullTest()
+    {
+        return TestResult.isNull("");
+    }
+
+    @TestAnnotation (order = 6)
+    public TestResult notNullTest()
+    {
+        return TestResult.notNull(null);
+    }
+
 }
