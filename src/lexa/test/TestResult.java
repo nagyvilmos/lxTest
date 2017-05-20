@@ -336,6 +336,18 @@ public class TestResult
                 ", complete=" + complete + ", pass=" + pass + ", exception=" + exception + '}';
     }
 
+    public static TestResult all(TestResult ... results)
+    {
+        for (TestResult result : results)
+        {
+            if (!result.passed())
+            {
+                return result;
+            }
+        }
+        return TestResult.result(true);
+    }
+
     public static TestResult isNull(Object result)
     {
         return TestResult.result(null, result, "Result is not null");

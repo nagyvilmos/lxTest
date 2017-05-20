@@ -79,4 +79,11 @@ public class BadTests
         return TestResult.notNull(null);
     }
 
-}
+    @TestAnnotation (order = 7)
+    public TestResult all()
+    {
+        return TestResult.all (
+                TestResult.result(true),
+                this.notNullTest()
+        );
+    }}

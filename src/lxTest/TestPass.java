@@ -72,6 +72,16 @@ public class TestPass
         return TestResult.notNull("");
     }
 
+    @TestAnnotation (order = 5)
+    public TestResult all()
+    {
+        return TestResult.all (
+                this.notNullTest(),
+                this.notNullTest(),
+                this.standardTest()
+        );
+    }
+
     /**
      * Test with arguments
      * @param arg step argument
