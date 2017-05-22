@@ -374,4 +374,11 @@ public class TestResult
                 (expected != null && expected.equals(result));
         return new TestResult(passed, message);
     }
+    public static TestResult result(Double min, Double max, Double result)
+    {
+        return TestResult.result(true, (result>= min && result <= max),
+                "Expected result between [" + min +
+                        "], and [" + max +
+                        "], result was [" + result + "]");
+    }
 }

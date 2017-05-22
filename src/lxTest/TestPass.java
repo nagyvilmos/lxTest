@@ -72,7 +72,7 @@ public class TestPass
         return TestResult.notNull("");
     }
 
-    @TestAnnotation (order = 5)
+    @TestAnnotation (order = 6)
     public TestResult all()
     {
         return TestResult.all (
@@ -80,6 +80,11 @@ public class TestPass
                 this.notNullTest(),
                 this.standardTest()
         );
+    }
+    @TestAnnotation (order = 7)
+    public TestResult range()
+    {
+        return TestResult.result (1.1, 1.2, 1.15);
     }
 
     /**

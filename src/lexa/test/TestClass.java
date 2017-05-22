@@ -297,7 +297,7 @@ public abstract class TestClass
         }
         catch (InvocationTargetException ex)
         {
-            return new TestResult(methodName,false,false,ex.getCause());
+            return new TestResult(methodName,false,false,ex.getTargetException());
         }
         catch (Exception ex) // anything else
         {

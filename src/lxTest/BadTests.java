@@ -86,4 +86,17 @@ public class BadTests
                 TestResult.result(true),
                 this.notNullTest()
         );
-    }}
+    }
+
+    @TestAnnotation (order = 8)
+    public TestResult rangeBelow()
+    {
+        return TestResult.result (1.1, 1.2, 1.0);
+    }
+
+    @TestAnnotation (order = 9)
+    public TestResult rangeAbove()
+    {
+        return TestResult.result (1.1, 1.2, 1.3);
+    }
+}
