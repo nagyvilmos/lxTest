@@ -36,7 +36,7 @@ public class LexaTest
                     new InterfaceTest()
                 })
             .execute()
-            .getReport(true,true)
+            .getReport(false,false)
         );
         System.out.println(
                 "     **** Note: the tests in BadTest should ALL fail"

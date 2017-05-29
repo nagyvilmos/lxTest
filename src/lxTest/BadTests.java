@@ -42,7 +42,7 @@ public class BadTests
     {
         // note it's marked as passed, but will become failed due to exception
         return new TestResult(true, true,
-                new Exception("Ths has completed with an exception to say why"));
+                new Exception("This has completed with an exception to say why"));
     }
 
     /**
@@ -54,7 +54,7 @@ public class BadTests
     {
         // note it's marked as passed, but will become failed due to exception
         return TestResult.result(true, false,
-                "Ths has failed with a message to say why");
+                "This has failed with a message to say why");
     }
     /**
      * Test that throws an exception
@@ -98,5 +98,25 @@ public class BadTests
     public TestResult rangeAbove()
     {
         return TestResult.result (1.1, 1.2, 1.3);
+    }
+    @TestAnnotation (order = 10)
+    public TestResult isClass()
+    {
+        return TestResult.isClass("String", 7);
+    }
+    @TestAnnotation (order = 11)
+    public TestResult isClassNull()
+    {
+        return TestResult.isClass("String", null);
+    }
+    @TestAnnotation (order = 20)
+    public TestResult assignableTo()
+    {
+        return TestResult.assignableTo("java.lang.String", 17);
+    }
+    @TestAnnotation (order = 22)
+    public TestResult assignableToNull()
+    {
+        return TestResult.assignableTo("java.lang.Object", null);
     }
 }

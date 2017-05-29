@@ -87,6 +87,21 @@ public class TestPass
         return TestResult.result (1.1, 1.2, 1.15);
     }
 
+    @TestAnnotation (order = 10)
+    public TestResult isClass()
+    {
+        return TestResult.isClass("java.lang.String", "Bobo");
+    }
+    @TestAnnotation (order = 20)
+    public TestResult assignableTo()
+    {
+        return TestResult.assignableTo("java.lang.String", "Bobo");
+    }
+    @TestAnnotation (order = 21)
+    public TestResult assignableToParent()
+    {
+        return TestResult.assignableTo("java.lang.Object", "Bobo");
+    }
     /**
      * Test with arguments
      * @param arg step argument
