@@ -285,11 +285,12 @@ public abstract class TestClass
                 (method.getName() + '(' + argument + ')') :
                 method.getName());
         try {
-            return new TestResult(methodName,
+            TestTimer timer = new TestTimer();
+            return timer.done(new TestResult(methodName,
                     (TestResult)(useArgument ?
                     method.invoke(this, argument) :
                     method.invoke(this))
-            );
+            ));
 //            boolean result = (Boolean)(useArgument ?
 //                    method.invoke(this, argument) :
 //                    method.invoke(this));

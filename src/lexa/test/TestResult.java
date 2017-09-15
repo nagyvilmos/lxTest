@@ -25,11 +25,22 @@ public class TestResult
 {
     private final String message;
     private final String name;
+    private final long elapsed;
     private final Boolean complete;
     private final Boolean pass;
     private final Throwable exception;
     private final List<TestResult> children;
 
+    public TestResult(TestResult result, long elapsed)
+    {
+        this.name = result.name;
+        this.elapsed = elapsed;
+        this.complete = result.complete;
+        this.pass = result.pass;
+        this.exception = result.exception;
+        this.children = result.children;
+        this.message = result.message;
+    }
     /**
      * Create a parent result set
      * @param name
@@ -38,6 +49,7 @@ public class TestResult
     public TestResult(String name)
     {
         this.name = name;
+        this.elapsed = 0;
         this.complete = null;
         this.pass = null;
         this.exception = null;
@@ -55,6 +67,7 @@ public class TestResult
     public TestResult(String name, TestResult rename)
     {
         this.name = name;
+        this.elapsed = rename.elapsed;
         this.complete = rename.complete;
         this.pass = rename.pass;
         this.exception = rename.exception;
@@ -143,7 +156,7 @@ public class TestResult
      */
     public TestResult(String name, boolean complete, boolean pass, Throwable exception)
     {
-        this(name, true, true, exception, null);
+        this(name, complete, pass, exception, null);
     }
 
     /**
@@ -167,6 +180,7 @@ public class TestResult
         // The three items MUST be consistant:
         this.pass = pass && complete && (exception == null);
         this.complete = complete && (exception == null);
+        this.elapsed = 0;
         this.exception = exception;
         this.children = null;
         this.message = this.pass ? null : message;
@@ -232,6 +246,17 @@ public class TestResult
     public String getName()
     {
         return this.name;
+    }
+
+    public long getElapsedTime()
+    {
+        if (!this.isParent())
+            return this.elapsed;
+
+        long elapsedTime = 0;
+        for (TestResult result : this.children)
+            elapsedTime+= result.getElapsedTime();
+        return elapsedTime;
     }
 
     /**
@@ -344,7 +369,7 @@ public class TestResult
      *          Flag if the report should include details of tests that passed
      * @param exceptions
      *          Flag if the report should include details of exceptions' stacks
-     * @return  A report of the results for this test.
+     * @return  A report of the results for this test.cd ..\
      */
     public String getReport(boolean details, boolean exceptions)
     {
@@ -365,8 +390,8 @@ public class TestResult
             if (details || !this.passed())
             {
                 report
-                    .append("\nName                                               Complete     Pass\n")
-                    .append("================================================== ======== ========\n");
+                    .append("\nName                                                                 Complete     Pass Time(ms)\n")
+                    .append("====================================================================== ======== ======== ========\n");
             }
         }
 
@@ -383,17 +408,23 @@ public class TestResult
                 report
                         .append(String.format("%8d", this.getTestCount()))
                         .append(" ")
-                        .append(String.format("%1$-41s", this.getName()))
+                        .append(String.format("%1$-61s", this.getName()))
                         .append(String.format("%9d", this.getCompleteCount()))
                         .append(String.format("%9d", this.getPassCount()))
+                        .append(String.format("%9d", this.getElapsedTime()))
                         .append('\n');
             }
             else
             {
                 report
-                        .append(String.format("%1$-50s", this.getName()))
-                        .append(this.completed() ? "      YES" : "       NO")
-                        .append(this.passed()    ? "      YES" : "       NO")
+                        .append(String.format("%1$-70s", this.getName()))
+                        .append(this.completed() ?
+                                "      YES" :
+                                "       NO")
+                        .append(this.passed()    ?
+                                "      YES" :
+                                "       NO")
+                        .append(String.format("%9d", this.getElapsedTime()))
                         .append('\n');
                 if (this.message != null)
                 {
