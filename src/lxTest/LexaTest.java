@@ -10,7 +10,6 @@
  */
 package lxTest;
 
-import lexa.test.TestClassInterface;
 import lexa.test.TestRun;
 
 /**
@@ -28,13 +27,10 @@ public class LexaTest
     {
         System.out.println(
             new TestRun(
-                new TestClassInterface[]
-                {
-                    new TestPass(),
-                    new ClassMethodTests(),
-                    new BadTests(),
-                    new InterfaceTest()
-                })
+                new TestPass(),
+                new ClassMethodTests(),
+                new BadTests(),
+                new InterfaceTest())
             .execute()
             .getReport()
         );

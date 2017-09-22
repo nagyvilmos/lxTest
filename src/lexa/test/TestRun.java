@@ -1,60 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*==============================================================================
+ * Lexa - Property of William Norman-Walker
+ *------------------------------------------------------------------------------
+ * TesRun.java (lxTest)
+ *------------------------------------------------------------------------------
+ * Author:  William Norman-Walker
+ * Created: December 2016
+ *==============================================================================
  */
 package lexa.test;
 
 /**
+ * Container for a list of tests to be run.
+ * This provides a convenient container to run a set of tests.  The class is
+ * instantiated with one or more {@link TestClassInterface test} to be performed.
+ * Optionally a list of tests can be added to be performed.
  *
  * @author william
+ * @since  2016-12
  */
 public class TestRun
 {
-
+    /** the list of tests to be performed */
     private final TestClassInterface[] classList;
 
     /**
+     * Create a test run for the supplied tests.
      *
-     * @param testClass
+     * @param classList the tests to perform.
      */
-    public TestRun(TestClassInterface testClass)
-    {
-        this(new TestClassInterface[]{testClass}, null);
-    }
-
-    /**
-     *
-     * @param testClass
-     * @param testList
-     */
-    public TestRun(TestClassInterface testClass, String[] testList)
-    {
-        this(new TestClassInterface[]{testClass}, testList);
-    }
-
-    /**
-     *
-     * @param classList
-     */
-    public TestRun(TestClassInterface[] classList)
-    {
-        this(classList, null);
-    }
-
-    /**
-     *
-     * @param classList
-     * @param testList
-     */
-    public TestRun(TestClassInterface[] classList, String[] testList)
+    public TestRun(TestClassInterface ... classList)
     {
         this.classList = classList;
     }
-    
+
     /**
-     *
-     * @return
+     * Run the tests
+     * @return  the result of the tests
      */
     public TestResult execute()
     {
@@ -62,9 +43,11 @@ public class TestRun
     }
 
     /**
+     * run the tests
      *
-     * @param stopOnError
-     * @return
+     * @param   stopOnError
+     *          indicate if the run should stop when a failure is encountered.
+     * @return  the result of the tests
      */
     public TestResult execute(boolean stopOnError)
     {
@@ -82,88 +65,4 @@ public class TestRun
         }
         return result;
     }
-
-//    private TestResult executeTestClass(int index)
-//    {
-//        boolean pass = true;
-//        boolean complete = false;
-//        TestClass current = null;
-//            current = this.classList[index];
-//            Class curClass = current.getClass();
-//            System.out.println(curClass.getCanonicalName());
-//            // set up the class
-//            boolean classSetUp = false;
-//            try
-//            {
-//                classSetUp = current.setUpClass();
-//            }
-//            catch (Exception ex)
-//            {
-//                ex.printStackTrace(System.out);
-//            }
-//            if (classSetUp)
-//            {
-//                boolean classPass = true;
-//                // loop through the tests
-//                for (Method method : curClass.getMethods())
-//                {
-//                    if (method.isAnnotationPresent(TestMethod.class))
-//                    {
-//                        TestMethod tm = method.getAnnotation(TestMethod.class);
-//                        System.out.println(method.getName());
-//                        methodCount++;
-//                        try {
-//                            // set up the test
-//                            Method methodSetUp =
-//                                    curClass.getMethod(tm.setUp());
-//                            System.out.println("> " + methodSetUp.toString());
-//                            if ((Boolean)methodSetUp.invoke(current))
-//                            {
-//                                // run the test
-//                                System.out.println("> " + method.toString());
-//                                if ((Boolean)method.invoke(current))
-//                                {
-//                                    // record the result
-//                                    methodPassCount++;
-//                                }
-//                                else
-//                                {
-//                                    classPass=false;
-//                                }
-//                                // tear down the test
-//                                Method methodTearDown =
-//                                        curClass.getMethod(tm.tearDown());
-//                                System.out.println("> " + methodTearDown.toString());
-//                                if ((Boolean)methodTearDown.invoke(current))
-//                                {
-//                                    methodCompleteCount++;
-//                                }
-//                            }
-//                        } 
-//                        catch (Exception ex)
-//                        {
-//                            ex.printStackTrace(System.out);
-//                            classPass=false;
-//                        }
-//                    }
-//                }
-//                // tear down the class
-//                if (classPass)
-//                {
-//                    classPassCount++;
-//                }
-//                try
-//                {
-//                    if (current.tearDownClass())
-//                    {
-//                        classCompleteCount++;
-//                    }
-//                }
-//                catch (Exception ex)
-//                {
-//                    ex.printStackTrace(System.out);
-//                }
-//            }
-//        }
-//    }
 }

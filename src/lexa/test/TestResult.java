@@ -428,7 +428,7 @@ public class TestResult
                         .append(String.format("%1$-61s", this.getName()))
                         .append(String.format("%9d", this.getCompleteCount()))
                         .append(String.format("%9d", this.getPassCount()))
-                        .append(this.getElapsedTime() > 1 ?
+                        .append(this.getElapsedTime() > 0 ?
                                 String.format("%9d", this.getElapsedTime()) :
                                 "        -")
                         .append('\n');
@@ -443,7 +443,7 @@ public class TestResult
                         .append(this.passed()    ?
                                 "      YES" :
                                 "       NO")
-                        .append(this.getElapsedTime() > 1 ?
+                        .append(this.getElapsedTime() > 0 ?
                                 String.format("%9d", this.getElapsedTime()) :
                                 "        -")
                         .append('\n');

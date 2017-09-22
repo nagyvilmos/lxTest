@@ -30,7 +30,6 @@ public class TestTimer
      */
     public TestTimer()
     {
-        java.lang.Runtime.getRuntime().maxMemory();
         this.startTime = new Date().getTime();
     }
 
