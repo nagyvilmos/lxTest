@@ -67,18 +67,30 @@ public class BadTests
     }
 
 
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestAnnotation (order = 5)
     public TestResult nullTest()
     {
         return TestResult.isNull("");
     }
 
-    @TestAnnotation (order = 6)
+     /**
+     * Test that fails
+     * @return {@code false}
+     */
+   @TestAnnotation (order = 6)
     public TestResult notNullTest()
     {
         return TestResult.notNull(null);
     }
 
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestAnnotation (order = 7)
     public TestResult all()
     {
@@ -88,32 +100,60 @@ public class BadTests
         );
     }
 
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestAnnotation (order = 8)
     public TestResult rangeBelow()
     {
         return TestResult.result (1.1, 1.2, 1.0);
     }
 
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestAnnotation (order = 9)
     public TestResult rangeAbove()
     {
         return TestResult.result (1.1, 1.2, 1.3);
     }
+
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestAnnotation (order = 10)
     public TestResult isClass()
     {
         return TestResult.isClass("String", 7);
     }
+
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestAnnotation (order = 11)
     public TestResult isClassNull()
     {
         return TestResult.isClass("String", null);
     }
+
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestAnnotation (order = 20)
     public TestResult assignableTo()
     {
         return TestResult.assignableTo("java.lang.String", 17);
     }
+
+    /**
+     * Test that fails
+     * @return {@code false}
+     */
     @TestAnnotation (order = 22)
     public TestResult assignableToNull()
     {

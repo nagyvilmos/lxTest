@@ -19,11 +19,18 @@ import java.util.*;
  */
 public class TestTimer
 {
-
+    /** start time for the test */
     private final long startTime;
 
+    /**
+     * Create a new timer
+     * <p>The timer is marked with a start time and calling
+     * {@link TestTimer#done(lexa.test.TestResult) done} will return the results
+     * with the added elapsed time in milliseconds.
+     */
     public TestTimer()
     {
+        java.lang.Runtime.getRuntime().maxMemory();
         this.startTime = new Date().getTime();
     }
 
@@ -35,8 +42,7 @@ public class TestTimer
      */
     TestResult done(TestResult result)
     {
-        return new TestResult(result,
-                new Date().getTime() - this.startTime
-        );
+        long elapsed = new Date().getTime() - this.startTime;
+        return new TestResult(result, elapsed);
     }
 }

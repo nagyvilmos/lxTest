@@ -31,6 +31,14 @@ public class TestResult
     private final Throwable exception;
     private final List<TestResult> children;
 
+    /**
+     * Add elapsed time to test results
+     * <p>Create a copy of the results with the added elapsed time.
+     * @param   result
+     *          the results to add elapsed time to.
+     * @param   elapsed
+     *          number of milliseconds to assign to the test.
+     */
     public TestResult(TestResult result, long elapsed)
     {
         this.name = result.name;
@@ -248,6 +256,15 @@ public class TestResult
         return this.name;
     }
 
+    /**
+     * Get the elapsed time for the test
+     *
+     * <p>Get the number of milliseconds elapsed for the test.  If this is a
+     * parent result then the time is the sum of all the children's elapsed
+     * time.
+     *
+     * @return  the elapsed time for the test
+     */
     public long getElapsedTime()
     {
         if (!this.isParent())
@@ -411,7 +428,9 @@ public class TestResult
                         .append(String.format("%1$-61s", this.getName()))
                         .append(String.format("%9d", this.getCompleteCount()))
                         .append(String.format("%9d", this.getPassCount()))
-                        .append(String.format("%9d", this.getElapsedTime()))
+                        .append(this.getElapsedTime() > 1 ?
+                                String.format("%9d", this.getElapsedTime()) :
+                                "        -")
                         .append('\n');
             }
             else
@@ -424,7 +443,9 @@ public class TestResult
                         .append(this.passed()    ?
                                 "      YES" :
                                 "       NO")
-                        .append(String.format("%9d", this.getElapsedTime()))
+                        .append(this.getElapsedTime() > 1 ?
+                                String.format("%9d", this.getElapsedTime()) :
+                                "        -")
                         .append('\n');
                 if (this.message != null)
                 {
@@ -518,6 +539,16 @@ public class TestResult
         return TestResult.result(true);
     }
 
+    /**
+     * Is the result assignable to a given class.
+     *
+     * @param   className
+     *          Name of the class the result must be assignable to
+     * @param   result
+     *          the result to compare
+     * @return  If the {@code result} is assignable to the named class then
+     *          {@code true}, otherwise {@code false}
+     */
     public static TestResult assignableTo(String className, Object result)
     {
         TestResult tr = TestResult.isClass(className, result);
@@ -538,6 +569,17 @@ public class TestResult
         return TestResult.result(true, cl.isAssignableFrom(result.getClass())
                 , "Result can not be assigned to " + className);
     }
+
+    /**
+     * Is the result the given class.
+     *
+     * @param   className
+     *          Name of the class the result must be
+     * @param   result
+     *          the result to compare
+     * @return  If the {@code result} is the named class then {@code true},
+     *          otherwise {@code false}
+     */
     public static TestResult isClass(String className, Object result)
     {
         return TestResult.result(className,
@@ -545,32 +587,92 @@ public class TestResult
                 "Result is not an instance of " + className);
     }
 
+    /**
+     * Is the result {@code null}
+     *
+     * @param   result
+     *          the result to compare
+     * @return  If the {@code result} is {@code null} then {@code true},
+     *          otherwise {@code false}
+     */
     public static TestResult isNull(Object result)
     {
         return TestResult.result(null, result, "Result is not null");
     }
 
+    /**
+     * Is the result not {@code null}
+     *
+     * @param   result
+     *          the result to compare
+     * @return  If the {@code result} is not {@code null} then {@code true},
+     *          otherwise {@code false}
+     */
     public static TestResult notNull(Object result)
     {
         return TestResult.result(true, result != null, "Result is null");
     }
 
+    /**
+     * Is the result {@code true}
+     *
+     * @param   result
+     *          the result to compare
+     * @return  If the {@code result} is {@code true} then {@code true},
+     *          otherwise {@code false}
+     */
     public static TestResult result(boolean result)
     {
         return TestResult.result(true, result, "Test returned false");
     }
 
+    /**
+     * Is the result equal to the expected value.
+     *
+     * @param   expected
+     *          the expected value
+     * @param   result
+     *          the result to compare
+     * @return  If the {@code result} equals {@code expected} then {@code true},
+     *          otherwise {@code false}
+     */
     public static TestResult result(Object expected, Object result)
     {
         return TestResult.result(expected, result,
                 "Expected result of [" + expected + "], result was [" + result + "]");
     }
+
+    /**
+     * Is the result equal to the expected value.
+     *
+     * @param   expected
+     *          the expected value
+     * @param   result
+     *          the result to compare
+     * @param   message
+     *          the message to include if the test failed.
+     * @return  If the {@code result} equals {@code expected} then {@code true},
+     *          otherwise {@code false}
+     */
     public static TestResult result(Object expected, Object result, String message)
     {
         boolean passed = (expected == null && result == null) ||
                 (expected != null && expected.equals(result));
         return new TestResult(passed, message);
     }
+
+    /**
+     * Is the result in the expected range.
+     *
+     * @param   min
+     *          the minimum acceptable value
+     * @param   max
+     *          the maximum acceptable value
+     * @param   result
+     *          the result to compare
+     * @return  If the {@code result} is between {@code min} and {@code max}
+     *          then {@code true}, otherwise {@code false}
+     */
     public static TestResult result(Double min, Double max, Double result)
     {
         return TestResult.result(true, (result>= min && result <= max),

@@ -94,7 +94,10 @@ public abstract class TestClass
         {
             if (!useClassArgument && test.argumentsMethod == null)
             {
-                result = this.executeTestStep(test, false, 0, stopOnError);
+                TestTimer timer = new TestTimer();
+                result = timer.done(
+                        this.executeTestStep(test, false, 0, stopOnError)
+                );
             }
             else
             {
@@ -104,7 +107,10 @@ public abstract class TestClass
                         step < test.arguments.length;
                         step ++)
                 {
-                    TestResult tr = this.executeTestStep(test, true, step, stopOnError);
+                    TestTimer timer = new TestTimer();
+                    TestResult tr = timer.done(
+                            this.executeTestStep(test, true, step, stopOnError)
+                    );
                     result.addResult(tr);
                     if (stopOnError && !tr.passed())
                     {
@@ -285,12 +291,11 @@ public abstract class TestClass
                 (method.getName() + '(' + argument + ')') :
                 method.getName());
         try {
-            TestTimer timer = new TestTimer();
-            return timer.done(new TestResult(methodName,
+            return new TestResult(methodName,
                     (TestResult)(useArgument ?
                     method.invoke(this, argument) :
                     method.invoke(this))
-            ));
+            );
 //            boolean result = (Boolean)(useArgument ?
 //                    method.invoke(this, argument) :
 //                    method.invoke(this));

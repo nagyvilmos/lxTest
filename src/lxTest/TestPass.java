@@ -60,18 +60,30 @@ public class TestPass
         return TestResult.result(true);
     }
 
+    /**
+     * Test null that passes
+     * @return {@code true}
+     */
     @TestAnnotation (order = 4)
     public TestResult nullTest()
     {
         return TestResult.isNull(null);
     }
 
+    /**
+     * Test not null that passes
+     * @return {@code true}
+     */
     @TestAnnotation (order = 5)
     public TestResult notNullTest()
     {
         return TestResult.notNull("");
     }
 
+    /**
+     * Test all that passes
+     * @return {@code true}
+     */
     @TestAnnotation (order = 6)
     public TestResult all()
     {
@@ -81,27 +93,47 @@ public class TestPass
                 this.standardTest()
         );
     }
+
+    /**
+     * Test range that passes
+     * @return {@code true}
+     */
     @TestAnnotation (order = 7)
     public TestResult range()
     {
         return TestResult.result (1.1, 1.2, 1.15);
     }
 
+    /**
+     * Test class that passes
+     * @return {@code true}
+     */
     @TestAnnotation (order = 10)
     public TestResult isClass()
     {
         return TestResult.isClass("java.lang.String", "Bobo");
     }
+
+    /**
+     * Test assignable to class that passes
+     * @return {@code true}
+     */
     @TestAnnotation (order = 20)
     public TestResult assignableTo()
     {
         return TestResult.assignableTo("java.lang.String", "Bobo");
     }
+
+    /**
+     * Test assignable to parent that passes
+     * @return {@code true}
+     */
     @TestAnnotation (order = 21)
     public TestResult assignableToParent()
     {
         return TestResult.assignableTo("java.lang.Object", "Bobo");
     }
+
     /**
      * Test with arguments
      * @param arg step argument
@@ -116,6 +148,7 @@ public class TestPass
     {
         return TestResult.result(true);
     }
+
     /**
      * Arguments for test
      * @return an array of numbers
